@@ -1,17 +1,25 @@
 {
-    "name": ":vendor_slug/:package_slug",
-    "description": ":package_description",
+    "name": "gessyken/laravel-test-accelerator",
+    "description": "Un package Laravel puissant pour accélérer le processus de développement et de test de vos applications",
     "keywords": [
-        ":vendor_name",
+        "gessyken",
         "laravel",
-        ":package_slug"
+        "laravel-test-accelerator",
+        "testing",
+        "test-generation",
+        "coverage",
+        "performance",
+        "ai",
+        "automation",
+        "phpunit",
+        "pest"
     ],
-    "homepage": "https://github.com/:vendor_slug/:package_slug",
+    "homepage": "https://github.com/gessyken/laravel-test-accelerator",
     "license": "MIT",
     "authors": [
         {
-            "name": ":author_name",
-            "email": "author@domain.com",
+            "name": "Aurel KENNE",
+            "email": "gessyken@gmail.com",
             "role": "Developer"
         }
     ],
@@ -35,13 +43,13 @@
     },
     "autoload": {
         "psr-4": {
-            "VendorName\\Skeleton\\": "src/",
-            "VendorName\\Skeleton\\Database\\Factories\\": "database/factories/"
+            "KENCODE\\LaravelTestAccelerator\\": "src/",
+            "KENCODE\\LaravelTestAccelerator\\Database\\Factories\\": "database/factories/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "VendorName\\Skeleton\\Tests\\": "tests/",
+            "KENCODE\\LaravelTestAccelerator\\Tests\\": "tests/",
             "Workbench\\App\\": "workbench/app/"
         }
     },
@@ -63,10 +71,10 @@
     "extra": {
         "laravel": {
             "providers": [
-                "VendorName\\Skeleton\\SkeletonServiceProvider"
+                "KENCODE\\LaravelTestAccelerator\\LaravelTestAcceleratorServiceProvider"
             ],
             "aliases": {
-                "Skeleton": "VendorName\\Skeleton\\Facades\\Skeleton"
+                "LaravelTestAccelerator": "KENCODE\\LaravelTestAccelerator\\Facades\\LaravelTestAccelerator"
             }
         }
     },
