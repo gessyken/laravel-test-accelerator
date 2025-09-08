@@ -10,9 +10,13 @@ class PerformanceAnalyzed
     use Dispatchable, SerializesModels;
 
     public array $slowTests;
+
     public array $memoryIssues;
+
     public float $averageTime;
+
     public float $totalTime;
+
     public array $recommendations;
 
     public function __construct(

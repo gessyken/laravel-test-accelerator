@@ -4,13 +4,11 @@ namespace KENCODE\LaravelTestAccelerator\Services;
 
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
-use ReflectionClass;
-use ReflectionMethod;
-use ReflectionProperty;
 
 class TestGenerator
 {
     protected array $config;
+
     protected array $templates;
 
     public function __construct()
@@ -40,19 +38,19 @@ class TestGenerator
      */
     public function generateForModel(string $modelPath, array $options = []): bool
     {
-        if (!file_exists($modelPath)) {
+        if (! file_exists($modelPath)) {
             return false;
         }
 
         $className = $this->getClassNameFromFile($modelPath);
-        if (!$className) {
+        if (! $className) {
             return false;
         }
 
-        $testClassName = $className . 'Test';
+        $testClassName = $className.'Test';
         $testPath = $this->getTestPath($className, 'Unit');
-        
-        if (File::exists($testPath) && !($options['force'] ?? false)) {
+
+        if (File::exists($testPath) && ! ($options['force'] ?? false)) {
             return false;
         }
 
@@ -76,19 +74,19 @@ class TestGenerator
      */
     public function generateForController(string $controllerPath, array $options = []): bool
     {
-        if (!file_exists($controllerPath)) {
+        if (! file_exists($controllerPath)) {
             return false;
         }
 
         $className = $this->getClassNameFromFile($controllerPath);
-        if (!$className) {
+        if (! $className) {
             return false;
         }
 
-        $testClassName = $className . 'Test';
+        $testClassName = $className.'Test';
         $testPath = $this->getTestPath($className, 'Feature');
-        
-        if (File::exists($testPath) && !($options['force'] ?? false)) {
+
+        if (File::exists($testPath) && ! ($options['force'] ?? false)) {
             return false;
         }
 
@@ -112,19 +110,19 @@ class TestGenerator
      */
     public function generateForService(string $servicePath, array $options = []): bool
     {
-        if (!file_exists($servicePath)) {
+        if (! file_exists($servicePath)) {
             return false;
         }
 
         $className = $this->getClassNameFromFile($servicePath);
-        if (!$className) {
+        if (! $className) {
             return false;
         }
 
-        $testClassName = $className . 'Test';
+        $testClassName = $className.'Test';
         $testPath = $this->getTestPath($className, 'Unit');
-        
-        if (File::exists($testPath) && !($options['force'] ?? false)) {
+
+        if (File::exists($testPath) && ! ($options['force'] ?? false)) {
             return false;
         }
 
@@ -149,6 +147,7 @@ class TestGenerator
     public function generateWithAI(string $path, string $prompt = '', array $options = []): bool
     {
         $aiGenerator = app(AITestGenerator::class);
+
         return $aiGenerator->generate($path, $prompt, $options);
     }
 
@@ -163,7 +162,7 @@ class TestGenerator
         foreach ($files as $file) {
             if ($this->isPhpFile($file)) {
                 $result = $this->generateForFile($file->getPathname(), $options);
-                if (!$result) {
+                if (! $result) {
                     $success = false;
                 }
             }
@@ -178,7 +177,7 @@ class TestGenerator
     protected function generateForFile(string $filePath, array $options = []): bool
     {
         $className = $this->getClassNameFromFile($filePath);
-        if (!$className) {
+        if (! $className) {
             return false;
         }
 
@@ -205,14 +204,14 @@ class TestGenerator
     protected function generateUnitTest(string $filePath, array $options = []): bool
     {
         $className = $this->getClassNameFromFile($filePath);
-        if (!$className) {
+        if (! $className) {
             return false;
         }
 
-        $testClassName = $className . 'Test';
+        $testClassName = $className.'Test';
         $testPath = $this->getTestPath($className, 'Unit');
-        
-        if (File::exists($testPath) && !($options['force'] ?? false)) {
+
+        if (File::exists($testPath) && ! ($options['force'] ?? false)) {
             return false;
         }
 
@@ -241,26 +240,26 @@ class TestGenerator
 
         // Basic model tests
         $testMethods[] = $this->generateTestMethod('it_can_create_a_model', [
-            '$model = ' . $this->getClassNameFromFile($filePath) . '::factory()->create();',
-            '$this->assertNotNull($model);'
+            '$model = '.$this->getClassNameFromFile($filePath).'::factory()->create();',
+            '$this->assertNotNull($model);',
         ]);
 
         $testMethods[] = $this->generateTestMethod('it_can_update_a_model', [
-            '$model = ' . $this->getClassNameFromFile($filePath) . '::factory()->create();',
+            '$model = '.$this->getClassNameFromFile($filePath).'::factory()->create();',
             '$originalValue = $model->name;',
             '$model->name = \'Updated Name\';',
             '$model->save();',
             '',
-            '$this->assertNotEquals($originalValue, $model->fresh()->name);'
+            '$this->assertNotEquals($originalValue, $model->fresh()->name);',
         ]);
 
         $testMethods[] = $this->generateTestMethod('it_can_delete_a_model', [
-            '$model = ' . $this->getClassNameFromFile($filePath) . '::factory()->create();',
+            '$model = '.$this->getClassNameFromFile($filePath).'::factory()->create();',
             '$modelId = $model->id;',
             '',
             '$model->delete();',
             '',
-            '$this->assertNull(' . $this->getClassNameFromFile($filePath) . '::find($modelId));'
+            '$this->assertNull('.$this->getClassNameFromFile($filePath).'::find($modelId));',
         ]);
 
         // Generate tests for relationships
@@ -327,8 +326,8 @@ class TestGenerator
         $testMethods = [];
 
         $testMethods[] = $this->generateTestMethod('it_can_be_instantiated', [
-            '$instance = new ' . $this->getClassNameFromFile($filePath) . '();',
-            '$this->assertNotNull($instance);'
+            '$instance = new '.$this->getClassNameFromFile($filePath).'();',
+            '$this->assertNotNull($instance);',
         ]);
 
         foreach ($methods as $method) {
@@ -336,10 +335,10 @@ class TestGenerator
                 continue;
             }
 
-            $testMethods[] = $this->generateTestMethod('it_can_call_' . Str::snake($method), [
-                '$instance = new ' . $this->getClassNameFromFile($filePath) . '();',
-                '// Add test logic for ' . $method . ' method',
-                '$this->assertTrue(true);'
+            $testMethods[] = $this->generateTestMethod('it_can_call_'.Str::snake($method), [
+                '$instance = new '.$this->getClassNameFromFile($filePath).'();',
+                '// Add test logic for '.$method.' method',
+                '$this->assertTrue(true);',
             ]);
         }
 
@@ -352,16 +351,16 @@ class TestGenerator
     protected function generateTestMethod(string $methodName, array $lines): string
     {
         $indent = '    ';
-        $content = $indent . '/** @test */' . "\n";
-        $content .= $indent . 'public function ' . $methodName . '()' . "\n";
-        $content .= $indent . '{' . "\n";
-        
+        $content = $indent.'/** @test */'."\n";
+        $content .= $indent.'public function '.$methodName.'()'."\n";
+        $content .= $indent.'{'."\n";
+
         foreach ($lines as $line) {
-            $content .= $indent . $indent . $line . "\n";
+            $content .= $indent.$indent.$line."\n";
         }
-        
-        $content .= $indent . '}';
-        
+
+        $content .= $indent.'}';
+
         return $content;
     }
 
@@ -372,12 +371,12 @@ class TestGenerator
     {
         $className = $this->getClassNameFromFile($filePath);
         $relatedModel = Str::studly(str_replace(['has', 'belongsTo'], '', $methodName));
-        
-        return $this->generateTestMethod('it_' . Str::snake($methodName), [
-            '$model = ' . $className . '::factory()->create();',
-            '$related = ' . $relatedModel . '::factory()->create([\'user_id\' => $model->id]);',
+
+        return $this->generateTestMethod('it_'.Str::snake($methodName), [
+            '$model = '.$className.'::factory()->create();',
+            '$related = '.$relatedModel.'::factory()->create([\'user_id\' => $model->id]);',
             '',
-            '$this->assertTrue($model->' . $methodName . '->contains($related));'
+            '$this->assertTrue($model->'.$methodName.'->contains($related));',
         ]);
     }
 
@@ -388,14 +387,14 @@ class TestGenerator
     {
         $className = $this->getClassNameFromFile($filePath);
         $attributeName = Str::snake(Str::replaceLast('Attribute', '', Str::replaceFirst('get', '', $methodName)));
-        
-        return $this->generateTestMethod('it_can_get_' . $attributeName . '_attribute', [
-            '$model = ' . $className . '::factory()->create([',
+
+        return $this->generateTestMethod('it_can_get_'.$attributeName.'_attribute', [
+            '$model = '.$className.'::factory()->create([',
             '    \'first_name\' => \'John\',',
             '    \'last_name\' => \'Doe\'',
             ']);',
             '',
-            '$this->assertEquals(\'John Doe\', $model->' . $attributeName . ');'
+            '$this->assertEquals(\'John Doe\', $model->'.$attributeName.');',
         ]);
     }
 
@@ -406,11 +405,11 @@ class TestGenerator
     {
         $className = $this->getClassNameFromFile($filePath);
         $routeName = Str::kebab($methodName);
-        
-        return $this->generateTestMethod('it_can_' . Str::snake($methodName), [
-            '$response = $this->getJson(\'/' . $routeName . '\');',
+
+        return $this->generateTestMethod('it_can_'.Str::snake($methodName), [
+            '$response = $this->getJson(\'/'.$routeName.'\');',
             '',
-            '$response->assertStatus(200);'
+            '$response->assertStatus(200);',
         ]);
     }
 
@@ -420,11 +419,11 @@ class TestGenerator
     protected function generateServiceTestMethod(string $methodName, string $filePath): string
     {
         $className = $this->getClassNameFromFile($filePath);
-        
-        return $this->generateTestMethod('it_can_' . Str::snake($methodName), [
-            '$service = new ' . $className . '();',
-            '// Add test logic for ' . $methodName . ' method',
-            '$this->assertTrue(true);'
+
+        return $this->generateTestMethod('it_can_'.Str::snake($methodName), [
+            '$service = new '.$className.'();',
+            '// Add test logic for '.$methodName.' method',
+            '$this->assertTrue(true);',
         ]);
     }
 
@@ -434,11 +433,11 @@ class TestGenerator
     protected function getClassNameFromFile(string $filePath): ?string
     {
         $content = File::get($filePath);
-        
+
         if (preg_match('/class\s+(\w+)/', $content, $matches)) {
             return $matches[1];
         }
-        
+
         return null;
     }
 
@@ -448,11 +447,11 @@ class TestGenerator
     protected function getClassNamespace(string $filePath): string
     {
         $content = File::get($filePath);
-        
+
         if (preg_match('/namespace\s+([^;]+);/', $content, $matches)) {
             return trim($matches[1]);
         }
-        
+
         return '';
     }
 
@@ -463,11 +462,11 @@ class TestGenerator
     {
         $content = File::get($filePath);
         $methods = [];
-        
+
         if (preg_match_all('/public\s+function\s+(\w+)/', $content, $matches)) {
             $methods = $matches[1];
         }
-        
+
         return $methods;
     }
 
@@ -477,6 +476,7 @@ class TestGenerator
     protected function isModel(string $filePath): bool
     {
         $content = File::get($filePath);
+
         return str_contains($content, 'extends Model') || str_contains($content, 'extends Authenticatable');
     }
 
@@ -486,6 +486,7 @@ class TestGenerator
     protected function isController(string $filePath): bool
     {
         $content = File::get($filePath);
+
         return str_contains($content, 'extends Controller') || str_contains($content, 'Controller');
     }
 
@@ -495,7 +496,8 @@ class TestGenerator
     protected function isService(string $filePath): bool
     {
         $content = File::get($filePath);
-        return str_contains($content, 'Service') && !str_contains($content, 'Test');
+
+        return str_contains($content, 'Service') && ! str_contains($content, 'Test');
     }
 
     /**
@@ -513,12 +515,12 @@ class TestGenerator
     {
         $testPaths = $this->config['test_paths'] ?? ['tests/Unit', 'tests/Feature'];
         $basePath = $testPaths[0]; // Default to first path
-        
+
         if ($type === 'Feature') {
             $basePath = $testPaths[1] ?? $testPaths[0];
         }
-        
-        return base_path($basePath . '/' . $className . 'Test.php');
+
+        return base_path($basePath.'/'.$className.'Test.php');
     }
 
     /**
@@ -535,11 +537,11 @@ class TestGenerator
     protected function getTemplate(string $templateName): string
     {
         $templatePath = $this->templates[$templateName] ?? "laravel-test-accelerator::templates.{$templateName}";
-        
+
         if (view()->exists($templatePath)) {
             return view($templatePath)->render();
         }
-        
+
         // Fallback to default templates
         return $this->getDefaultTemplate($templateName);
     }
@@ -554,7 +556,7 @@ class TestGenerator
             'model_test' => $this->getModelTestTemplate(),
             'controller_test' => $this->getControllerTestTemplate(),
         ];
-        
+
         return $templates[$templateName] ?? $templates['unit_test'];
     }
 
@@ -640,7 +642,7 @@ class {{TEST_CLASS}} extends TestCase
         foreach ($replacements as $key => $value) {
             $content = str_replace("{{$key}}", $value, $content);
         }
-        
+
         return $content;
     }
 }

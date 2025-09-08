@@ -2,16 +2,19 @@
 
 namespace KENCODE\LaravelTestAccelerator;
 
-use KENCODE\LaravelTestAccelerator\Services\TestGenerator;
+use KENCODE\LaravelTestAccelerator\Services\AITestGenerator;
 use KENCODE\LaravelTestAccelerator\Services\CoverageAnalyzer;
 use KENCODE\LaravelTestAccelerator\Services\PerformanceAnalyzer;
-use KENCODE\LaravelTestAccelerator\Services\AITestGenerator;
+use KENCODE\LaravelTestAccelerator\Services\TestGenerator;
 
 class LaravelTestAccelerator
 {
     protected TestGenerator $testGenerator;
+
     protected CoverageAnalyzer $coverageAnalyzer;
+
     protected PerformanceAnalyzer $performanceAnalyzer;
+
     protected AITestGenerator $aiTestGenerator;
 
     public function __construct(

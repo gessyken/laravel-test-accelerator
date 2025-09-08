@@ -3,8 +3,8 @@
 namespace KENCODE\LaravelTestAccelerator\Commands;
 
 use Illuminate\Console\Command;
-use KENCODE\LaravelTestAccelerator\Services\TestGenerator;
 use KENCODE\LaravelTestAccelerator\Services\AITestGenerator;
+use KENCODE\LaravelTestAccelerator\Services\TestGenerator;
 
 class GenerateTestsCommand extends Command
 {
@@ -30,32 +30,34 @@ class GenerateTestsCommand extends Command
         $this->info("🚀 Generating tests for: {$path}");
 
         if ($useAI) {
-            $this->info("🤖 Using AI to generate test cases...");
-            
+            $this->info('🤖 Using AI to generate test cases...');
+
             // Validate AI configuration
             $errors = $aiGenerator->validateConfiguration();
-            if (!empty($errors)) {
+            if (! empty($errors)) {
                 foreach ($errors as $error) {
                     $this->error("❌ {$error}");
                 }
+
                 return self::FAILURE;
             }
 
             // Test AI connection
-            if (!$aiGenerator->testConnection()) {
-                $this->error("❌ Failed to connect to AI service");
+            if (! $aiGenerator->testConnection()) {
+                $this->error('❌ Failed to connect to AI service');
+
                 return self::FAILURE;
             }
 
-            $this->info("✅ AI connection successful");
+            $this->info('✅ AI connection successful');
 
             $result = $aiGenerator->generate($path, $prompt, [
                 'force' => $force,
                 'type' => $type,
             ]);
         } else {
-            $this->info("📝 Using basic test generation...");
-            
+            $this->info('📝 Using basic test generation...');
+
             $options = [
                 'force' => $force,
                 'type' => $type,
@@ -69,20 +71,21 @@ class GenerateTestsCommand extends Command
         }
 
         if ($result) {
-            $this->info("✅ Tests generated successfully!");
-            $this->line("📁 Check your tests directory for the generated files.");
-            
+            $this->info('✅ Tests generated successfully!');
+            $this->line('📁 Check your tests directory for the generated files.');
+
             // Show next steps
             $this->newLine();
-            $this->info("Next steps:");
-            $this->line("• Run tests: composer test");
-            $this->line("• Check coverage: php artisan test:coverage");
-            $this->line("• Analyze performance: php artisan test:benchmark");
-            
+            $this->info('Next steps:');
+            $this->line('• Run tests: composer test');
+            $this->line('• Check coverage: php artisan test:coverage');
+            $this->line('• Analyze performance: php artisan test:benchmark');
+
             return self::SUCCESS;
         } else {
-            $this->error("❌ Failed to generate tests");
-            $this->line("💡 Try using --force to overwrite existing files");
+            $this->error('❌ Failed to generate tests');
+            $this->line('💡 Try using --force to overwrite existing files');
+
             return self::FAILURE;
         }
     }

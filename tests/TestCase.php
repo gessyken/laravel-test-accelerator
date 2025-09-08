@@ -3,8 +3,8 @@
 namespace KENCODE\LaravelTestAccelerator\Tests;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Orchestra\Testbench\TestCase as Orchestra;
 use KENCODE\LaravelTestAccelerator\LaravelTestAcceleratorServiceProvider;
+use Orchestra\Testbench\TestCase as Orchestra;
 
 class TestCase extends Orchestra
 {

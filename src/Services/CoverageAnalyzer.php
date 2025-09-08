@@ -21,7 +21,7 @@ class CoverageAnalyzer
     {
         $threshold = $options['threshold'] ?? $this->config['threshold'] ?? 80;
         $coverageData = $this->runCoverageAnalysis();
-        
+
         $results = [
             'total' => $coverageData['total'] ?? 0,
             'files' => $coverageData['files'] ?? [],
@@ -38,7 +38,7 @@ class CoverageAnalyzer
     public function generateHtmlReport(?string $outputPath = null): bool
     {
         $outputPath = $outputPath ?? storage_path('app/laravel-test-accelerator/coverage');
-        
+
         File::ensureDirectoryExists($outputPath);
 
         $command = $this->buildCoverageCommand([
@@ -47,7 +47,7 @@ class CoverageAnalyzer
         ]);
 
         $result = Process::run($command);
-        
+
         return $result->successful();
     }
 
@@ -57,7 +57,7 @@ class CoverageAnalyzer
     public function generateXmlReport(?string $outputPath = null): bool
     {
         $outputPath = $outputPath ?? storage_path('app/laravel-test-accelerator/coverage.xml');
-        
+
         File::ensureDirectoryExists(dirname($outputPath));
 
         $command = $this->buildCoverageCommand([
@@ -66,7 +66,7 @@ class CoverageAnalyzer
         ]);
 
         $result = Process::run($command);
-        
+
         return $result->successful();
     }
 
@@ -76,7 +76,7 @@ class CoverageAnalyzer
     public function generateCloverReport(?string $outputPath = null): bool
     {
         $outputPath = $outputPath ?? storage_path('app/laravel-test-accelerator/clover.xml');
-        
+
         File::ensureDirectoryExists(dirname($outputPath));
 
         $command = $this->buildCoverageCommand([
@@ -85,7 +85,7 @@ class CoverageAnalyzer
         ]);
 
         $result = Process::run($command);
-        
+
         return $result->successful();
     }
 
@@ -95,12 +95,12 @@ class CoverageAnalyzer
     public function getCoverageStats(): array
     {
         $coverageData = $this->runCoverageAnalysis();
-        
+
         return [
             'total_coverage' => $coverageData['total'] ?? 0,
             'files_analyzed' => count($coverageData['files'] ?? []),
-            'files_covered' => count(array_filter($coverageData['files'] ?? [], fn($file) => $file['coverage'] >= 80)),
-            'files_low_coverage' => count(array_filter($coverageData['files'] ?? [], fn($file) => $file['coverage'] < 80)),
+            'files_covered' => count(array_filter($coverageData['files'] ?? [], fn ($file) => $file['coverage'] >= 80)),
+            'files_low_coverage' => count(array_filter($coverageData['files'] ?? [], fn ($file) => $file['coverage'] < 80)),
         ];
     }
 
@@ -114,8 +114,8 @@ class CoverageAnalyzer
         ]);
 
         $result = Process::run($command);
-        
-        if (!$result->successful()) {
+
+        if (! $result->successful()) {
             return ['total' => 0, 'files' => []];
         }
 
@@ -128,7 +128,7 @@ class CoverageAnalyzer
     protected function buildCoverageCommand(array $options = []): string
     {
         $command = 'vendor/bin/pest --coverage-text';
-        
+
         foreach ($options as $key => $value) {
             if ($value === '') {
                 $command .= " --{$key}";
@@ -136,7 +136,7 @@ class CoverageAnalyzer
                 $command .= " --{$key}={$value}";
             }
         }
-        
+
         return $command;
     }
 
@@ -148,32 +148,32 @@ class CoverageAnalyzer
         $lines = explode("\n", $output);
         $files = [];
         $totalCoverage = 0;
-        
+
         foreach ($lines as $line) {
             if (str_contains($line, '%') && str_contains($line, '|')) {
                 $parts = explode('|', $line);
                 if (count($parts) >= 2) {
                     $filePath = trim($parts[0]);
                     $coverage = $this->extractCoveragePercentage($parts[1]);
-                    
+
                     if ($coverage !== null) {
                         $files[] = [
                             'file' => $filePath,
                             'coverage' => $coverage,
-                            'status' => $coverage >= 80 ? 'good' : 'low'
+                            'status' => $coverage >= 80 ? 'good' : 'low',
                         ];
                     }
                 }
             }
-            
+
             if (str_contains($line, 'Total Coverage:')) {
                 $totalCoverage = $this->extractCoveragePercentage($line);
             }
         }
-        
+
         return [
             'total' => $totalCoverage ?? 0,
-            'files' => $files
+            'files' => $files,
         ];
     }
 
@@ -185,7 +185,7 @@ class CoverageAnalyzer
         if (preg_match('/(\d+(?:\.\d+)?)%/', $text, $matches)) {
             return (float) $matches[1];
         }
-        
+
         return null;
     }
 }

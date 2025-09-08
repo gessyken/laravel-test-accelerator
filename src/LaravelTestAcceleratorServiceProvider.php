@@ -2,14 +2,14 @@
 
 namespace KENCODE\LaravelTestAccelerator;
 
-use KENCODE\LaravelTestAccelerator\Commands\LaravelTestAcceleratorCommand;
-use KENCODE\LaravelTestAccelerator\Commands\GenerateTestsCommand;
 use KENCODE\LaravelTestAccelerator\Commands\CoverageAnalysisCommand;
+use KENCODE\LaravelTestAccelerator\Commands\GenerateTestsCommand;
+use KENCODE\LaravelTestAccelerator\Commands\LaravelTestAcceleratorCommand;
 use KENCODE\LaravelTestAccelerator\Commands\PerformanceBenchmarkCommand;
-use KENCODE\LaravelTestAccelerator\Services\TestGenerator;
+use KENCODE\LaravelTestAccelerator\Services\AITestGenerator;
 use KENCODE\LaravelTestAccelerator\Services\CoverageAnalyzer;
 use KENCODE\LaravelTestAccelerator\Services\PerformanceAnalyzer;
-use KENCODE\LaravelTestAccelerator\Services\AITestGenerator;
+use KENCODE\LaravelTestAccelerator\Services\TestGenerator;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 
@@ -42,7 +42,7 @@ class LaravelTestAcceleratorServiceProvider extends PackageServiceProvider
         $this->app->singleton(CoverageAnalyzer::class);
         $this->app->singleton(PerformanceAnalyzer::class);
         $this->app->singleton(AITestGenerator::class);
-        
+
         // Register main service
         $this->app->singleton('laravel-test-accelerator', function ($app) {
             return new LaravelTestAccelerator(

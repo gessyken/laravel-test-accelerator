@@ -10,9 +10,13 @@ class CoverageAnalyzed
     use Dispatchable, SerializesModels;
 
     public float $coverage;
+
     public float $threshold;
+
     public bool $passed;
+
     public array $files;
+
     public array $options;
 
     public function __construct(float $coverage, float $threshold, bool $passed, array $files, array $options = [])

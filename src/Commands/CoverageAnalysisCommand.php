@@ -24,7 +24,7 @@ class CoverageAnalysisCommand extends Command
         $generateClover = $this->option('clover');
         $outputDir = $this->option('output');
 
-        $this->info("📊 Analyzing test coverage...");
+        $this->info('📊 Analyzing test coverage...');
 
         $options = [
             'threshold' => $threshold,
@@ -44,43 +44,45 @@ class CoverageAnalysisCommand extends Command
         if ($results['total'] < $results['threshold']) {
             $this->newLine();
             $this->error("❌ Coverage below threshold of {$results['threshold']}%");
-            $this->line("💡 Consider adding more tests or improving existing ones");
+            $this->line('💡 Consider adding more tests or improving existing ones');
+
             return self::FAILURE;
         }
 
         $this->newLine();
-        $this->info("✅ Coverage analysis completed successfully!");
+        $this->info('✅ Coverage analysis completed successfully!');
+
         return self::SUCCESS;
     }
 
     protected function displayCoverageResults(array $results): void
     {
         $this->newLine();
-        
+
         // Display file-by-file coverage
-        if (!empty($results['files'])) {
-            $this->info("📁 File Coverage:");
-            
+        if (! empty($results['files'])) {
+            $this->info('📁 File Coverage:');
+
             $headers = ['File', 'Coverage %', 'Status'];
             $rows = [];
-            
+
             foreach ($results['files'] as $file) {
                 $status = $file['coverage'] >= 80 ? '✅ Good' : '⚠️ Low';
                 $rows[] = [
                     $this->truncatePath($file['file']),
-                    number_format($file['coverage'], 1) . '%',
-                    $status
+                    number_format($file['coverage'], 1).'%',
+                    $status,
                 ];
             }
-            
+
             $this->table($headers, $rows);
         }
 
         // Display overall coverage
         $this->newLine();
-        $this->info("📈 Overall Coverage: " . number_format($results['total'], 1) . "%");
-        $this->info("🎯 Threshold: " . $results['threshold'] . "%");
-        
+        $this->info('📈 Overall Coverage: '.number_format($results['total'], 1).'%');
+        $this->info('🎯 Threshold: '.$results['threshold'].'%');
+
         $status = $results['passed'] ? '✅ Passed' : '❌ Failed';
         $this->info("📊 Status: {$status}");
     }
@@ -88,45 +90,45 @@ class CoverageAnalysisCommand extends Command
     protected function generateReports(CoverageAnalyzer $coverageAnalyzer, ?string $outputDir, bool $html, bool $xml, bool $clover): void
     {
         $this->newLine();
-        $this->info("📄 Generating reports...");
+        $this->info('📄 Generating reports...');
 
         $success = true;
 
         if ($html) {
-            $this->line("Generating HTML report...");
+            $this->line('Generating HTML report...');
             $htmlSuccess = $coverageAnalyzer->generateHtmlReport($outputDir);
             if ($htmlSuccess) {
-                $this->info("✅ HTML report generated");
+                $this->info('✅ HTML report generated');
             } else {
-                $this->error("❌ Failed to generate HTML report");
+                $this->error('❌ Failed to generate HTML report');
                 $success = false;
             }
         }
 
         if ($xml) {
-            $this->line("Generating XML report...");
+            $this->line('Generating XML report...');
             $xmlSuccess = $coverageAnalyzer->generateXmlReport($outputDir);
             if ($xmlSuccess) {
-                $this->info("✅ XML report generated");
+                $this->info('✅ XML report generated');
             } else {
-                $this->error("❌ Failed to generate XML report");
+                $this->error('❌ Failed to generate XML report');
                 $success = false;
             }
         }
 
         if ($clover) {
-            $this->line("Generating Clover report...");
+            $this->line('Generating Clover report...');
             $cloverSuccess = $coverageAnalyzer->generateCloverReport($outputDir);
             if ($cloverSuccess) {
-                $this->info("✅ Clover report generated");
+                $this->info('✅ Clover report generated');
             } else {
-                $this->error("❌ Failed to generate Clover report");
+                $this->error('❌ Failed to generate Clover report');
                 $success = false;
             }
         }
 
         if ($success) {
-            $this->info("📁 Reports saved to: " . ($outputDir ?? storage_path('app/laravel-test-accelerator')));
+            $this->info('📁 Reports saved to: '.($outputDir ?? storage_path('app/laravel-test-accelerator')));
         }
     }
 
@@ -136,6 +138,6 @@ class CoverageAnalysisCommand extends Command
             return $path;
         }
 
-        return '...' . substr($path, -($length - 3));
+        return '...'.substr($path, -($length - 3));
     }
 }

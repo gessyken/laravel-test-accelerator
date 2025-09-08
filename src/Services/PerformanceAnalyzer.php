@@ -2,7 +2,6 @@
 
 namespace KENCODE\LaravelTestAccelerator\Services;
 
-use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Process;
 
 class PerformanceAnalyzer
@@ -21,12 +20,12 @@ class PerformanceAnalyzer
     {
         $slowThreshold = $options['slow_threshold'] ?? $this->config['slow_threshold'] ?? 1000;
         $memoryThreshold = $options['memory_threshold'] ?? $this->config['memory_threshold'] ?? 1024;
-        
+
         $testResults = $this->runPerformanceTests();
-        
+
         $slowTests = $this->identifySlowTests($testResults, $slowThreshold);
         $memoryIssues = $this->identifyMemoryIssues($testResults, $memoryThreshold);
-        
+
         return [
             'total_tests' => count($testResults),
             'slow_tests' => $slowTests,
@@ -44,7 +43,7 @@ class PerformanceAnalyzer
     {
         $slowThreshold = $this->config['slow_threshold'] ?? 1000;
         $testResults = $this->runPerformanceTests();
-        
+
         return $this->identifySlowTests($testResults, $slowThreshold);
     }
 
@@ -55,7 +54,7 @@ class PerformanceAnalyzer
     {
         $memoryThreshold = $this->config['memory_threshold'] ?? 1024;
         $testResults = $this->runPerformanceTests();
-        
+
         return $this->identifyMemoryIssues($testResults, $memoryThreshold);
     }
 
@@ -65,7 +64,7 @@ class PerformanceAnalyzer
     public function generateReport(): array
     {
         $analysis = $this->analyze();
-        
+
         return [
             'summary' => [
                 'total_tests' => $analysis['total_tests'],
@@ -87,10 +86,10 @@ class PerformanceAnalyzer
     protected function runPerformanceTests(): array
     {
         $command = 'vendor/bin/pest --verbose --coverage-text';
-        
+
         $result = Process::run($command);
-        
-        if (!$result->successful()) {
+
+        if (! $result->successful()) {
             return [];
         }
 
@@ -104,7 +103,7 @@ class PerformanceAnalyzer
     {
         $lines = explode("\n", $output);
         $tests = [];
-        
+
         foreach ($lines as $line) {
             if (str_contains($line, 'PASS') || str_contains($line, 'FAIL')) {
                 $testData = $this->extractTestData($line);
@@ -113,7 +112,7 @@ class PerformanceAnalyzer
                 }
             }
         }
-        
+
         return $tests;
     }
 
@@ -132,7 +131,7 @@ class PerformanceAnalyzer
                 'memory' => $this->extractMemoryUsage($line),
             ];
         }
-        
+
         return null;
     }
 
@@ -144,7 +143,7 @@ class PerformanceAnalyzer
         if (preg_match('/(\d+(?:\.\d+)?)MB/', $line, $matches)) {
             return (float) $matches[1] * 1024; // Convert to KB
         }
-        
+
         return 0;
     }
 
@@ -176,8 +175,9 @@ class PerformanceAnalyzer
         if (empty($testResults)) {
             return 0;
         }
-        
+
         $totalTime = array_sum(array_column($testResults, 'time'));
+
         return $totalTime / count($testResults);
     }
 
@@ -195,23 +195,23 @@ class PerformanceAnalyzer
     protected function generateRecommendations(array $slowTests, array $memoryIssues): array
     {
         $recommendations = [];
-        
-        if (!empty($slowTests)) {
+
+        if (! empty($slowTests)) {
             $recommendations[] = [
                 'type' => 'performance',
-                'message' => 'Consider optimizing ' . count($slowTests) . ' slow tests',
+                'message' => 'Consider optimizing '.count($slowTests).' slow tests',
                 'tests' => array_column($slowTests, 'name'),
             ];
         }
-        
-        if (!empty($memoryIssues)) {
+
+        if (! empty($memoryIssues)) {
             $recommendations[] = [
                 'type' => 'memory',
-                'message' => 'Consider optimizing ' . count($memoryIssues) . ' memory-intensive tests',
+                'message' => 'Consider optimizing '.count($memoryIssues).' memory-intensive tests',
                 'tests' => array_column($memoryIssues, 'name'),
             ];
         }
-        
+
         if (empty($slowTests) && empty($memoryIssues)) {
             $recommendations[] = [
                 'type' => 'success',
@@ -219,7 +219,7 @@ class PerformanceAnalyzer
                 'tests' => [],
             ];
         }
-        
+
         return $recommendations;
     }
 }
