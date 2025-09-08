@@ -2,9 +2,9 @@
 
 namespace KENCODE\LaravelTestAccelerator;
 
+use KENCODE\LaravelTestAccelerator\Commands\LaravelTestAcceleratorCommand;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
-use KENCODE\LaravelTestAccelerator\Commands\LaravelTestAcceleratorCommand;
 
 class LaravelTestAcceleratorServiceProvider extends PackageServiceProvider
 {

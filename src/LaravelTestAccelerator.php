@@ -2,6 +2,4 @@
 
 namespace KENCODE\LaravelTestAccelerator;
 
-class LaravelTestAccelerator {
-    
-}
+class LaravelTestAccelerator {}
