@@ -26,7 +26,6 @@ class LaravelTestAcceleratorServiceProvider extends PackageServiceProvider
             ->name('laravel-test-accelerator')
             ->hasConfigFile()
             ->hasViews()
-            ->hasMigration('create_migration_table_name_table')
             ->hasCommands([
                 LaravelTestAcceleratorCommand::class,
                 GenerateTestsCommand::class,

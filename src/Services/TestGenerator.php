@@ -325,8 +325,10 @@ class TestGenerator
         $methods = $this->getPublicMethods($filePath);
         $testMethods = [];
 
+        $instantiation = $this->getInstantiationLine($filePath);
+
         $testMethods[] = $this->generateTestMethod('it_can_be_instantiated', [
-            '$instance = new '.$this->getClassNameFromFile($filePath).'();',
+            $instantiation,
             '$this->assertNotNull($instance);',
         ]);
 
@@ -336,7 +338,7 @@ class TestGenerator
             }
 
             $testMethods[] = $this->generateTestMethod('it_can_call_'.Str::snake($method), [
-                '$instance = new '.$this->getClassNameFromFile($filePath).'();',
+                $instantiation,
                 '// Add test logic for '.$method.' method',
                 '$this->assertTrue(true);',
             ]);
@@ -420,11 +422,26 @@ class TestGenerator
     {
         $className = $this->getClassNameFromFile($filePath);
 
+        $instantiation = $this->getInstantiationLine($filePath, variableName: '$service');
+
         return $this->generateTestMethod('it_can_'.Str::snake($methodName), [
-            '$service = new '.$className.'();',
+            $instantiation,
             '// Add test logic for '.$methodName.' method',
             '$this->assertTrue(true);',
         ]);
+    }
+
+    /**
+     * Determine the proper instantiation line for a class under test.
+     * Uses container for ServiceProviders, otherwise new Class().
+     */
+    protected function getInstantiationLine(string $filePath, string $variableName = '$instance'): string
+    {
+        $className = $this->getClassNameFromFile($filePath);
+        if ($this->isServiceProvider($filePath)) {
+            return $variableName.' = app('.$className.'::class);';
+        }
+        return $variableName.' = new '.$className.'();';
     }
 
     /**
@@ -498,6 +515,15 @@ class TestGenerator
         $content = File::get($filePath);
 
         return str_contains($content, 'Service') && ! str_contains($content, 'Test');
+    }
+
+    /**
+     * Check if file is a Laravel ServiceProvider
+     */
+    protected function isServiceProvider(string $filePath): bool
+    {
+        $content = File::get($filePath);
+        return str_contains($content, 'extends ServiceProvider');
     }
 
     /**
@@ -640,8 +666,19 @@ class {{TEST_CLASS}} extends TestCase
     protected function replacePlaceholders(string $content, array $replacements): string
     {
         foreach ($replacements as $key => $value) {
+            // Support both double-brace {{KEY}} and single-brace {KEY} placeholders
             $content = str_replace("{{$key}}", $value, $content);
+            $content = str_replace('{'.$key.'}', $value, $content);
         }
+
+        // Final cleanup: remove any remaining single-braced identifiers like {App\Models} or {User}
+        // This avoids leaving stray braces in generated files if a placeholder was missed.
+        $content = preg_replace('/\{([A-Za-z_\\\\][A-Za-z0-9_\\\\]*)\}/', '$1', $content);
+
+        // Also collapse accidental patterns like "{    /** @test */" -> "    /** @test */"
+        $content = preg_replace('/\{\s+(\/\*\*[^\n]*\n)/', '$1', $content);
+        // Remove solitary trailing braces that might linger before class closing
+        $content = preg_replace('/\n\}\}\s*\n\}\s*$/', "\n}\n", $content);
 
         return $content;
     }
