@@ -640,7 +640,7 @@ class {{TEST_CLASS}} extends TestCase
     protected function replacePlaceholders(string $content, array $replacements): string
     {
         foreach ($replacements as $key => $value) {
-            $content = str_replace("{{$key}}", $value, $content);
+            $content = str_replace('{{'.$key.'}}', $value, $content);
         }
 
         return $content;
