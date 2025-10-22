@@ -3,45 +3,51 @@
 ## ✅ Ce qui a été configuré
 
 ### 1. Système de Versioning
-- ✅ Version ajoutée dans `composer.json` (1.0.0)
-- ✅ Tag Git créé (`v1.0.0`)
-- ✅ Workflow GitHub Actions configuré
-- ✅ Script de release automatisé (`release.sh`)
+
+-   ✅ Version ajoutée dans `composer.json` (1.0.0)
+-   ✅ Tag Git créé (`v1.0.0`)
+-   ✅ Workflow GitHub Actions configuré
+-   ✅ Script de release automatisé (`release.sh`)
 
 ### 2. Configuration Packagist
-- ✅ `composer.json` correctement configuré
-- ✅ Repository GitHub configuré
-- ✅ Documentation Packagist créée
+
+-   ✅ `composer.json` correctement configuré
+-   ✅ Repository GitHub configuré
+-   ✅ Documentation Packagist créée
 
 ## 📋 Étapes pour publier sur Packagist
 
 ### Étape 1: Créer un compte Packagist
+
 1. Aller sur https://packagist.org/
-2. Cliquer sur "Log in" 
+2. Cliquer sur "Log in"
 3. Se connecter avec votre compte GitHub
 
 ### Étape 2: Soumettre le package
+
 1. Cliquer sur "Submit" dans Packagist
 2. Entrer l'URL du repository: `https://github.com/gessyken/laravel-test-accelerator`
 3. Cliquer sur "Check" pour valider
 4. Cliquer sur "Submit" pour publier
 
 ### Étape 3: Configurer le webhook GitHub (Recommandé)
+
 Pour que Packagist se mette à jour automatiquement:
 
 1. **Sur Packagist:**
-   - Aller sur https://packagist.org/packages/gessyken/laravel-test-accelerator
-   - Cliquer sur "Settings"
-   - Copier l'URL du webhook
+
+    - Aller sur https://packagist.org/packages/gessyken/laravel-test-accelerator
+    - Cliquer sur "Settings"
+    - Copier l'URL du webhook
 
 2. **Sur GitHub:**
-   - Aller sur https://github.com/gessyken/laravel-test-accelerator/settings/hooks
-   - Cliquer sur "Add webhook"
-   - Coller l'URL du webhook
-   - Content type: `application/json`
-   - Events: Sélectionner "Just the push event"
-   - Active: ✓
-   - Cliquer sur "Add webhook"
+    - Aller sur https://github.com/gessyken/laravel-test-accelerator/settings/hooks
+    - Cliquer sur "Add webhook"
+    - Coller l'URL du webhook
+    - Content type: `application/json`
+    - Events: Sélectionner "Just the push event"
+    - Active: ✓
+    - Cliquer sur "Add webhook"
 
 ## 🧪 Test de l'installation
 
@@ -80,15 +86,18 @@ Pour les prochaines versions:
 ## 📊 Vérification du Statut
 
 ### Vérifier que le package est disponible:
+
 ```bash
 composer show gessyken/laravel-test-accelerator
 ```
 
 ### Vérifier les releases GitHub:
-- https://github.com/gessyken/laravel-test-accelerator/releases
+
+-   https://github.com/gessyken/laravel-test-accelerator/releases
 
 ### Vérifier le workflow GitHub Actions:
-- https://github.com/gessyken/laravel-test-accelerator/actions
+
+-   https://github.com/gessyken/laravel-test-accelerator/actions
 
 ## 🎯 Prochaines Étapes
 
@@ -101,21 +110,25 @@ composer show gessyken/laravel-test-accelerator
 ## 🚨 Résolution de Problèmes
 
 ### Erreur "Could not find a version"
-- Vérifier que le tag Git existe: `git tag`
-- Vérifier que le tag est poussé: `git push origin v1.0.0`
-- Attendre quelques minutes pour la synchronisation Packagist
+
+-   Vérifier que le tag Git existe: `git tag`
+-   Vérifier que le tag est poussé: `git push origin v1.0.0`
+-   Attendre quelques minutes pour la synchronisation Packagist
 
 ### Erreur "Package not found"
-- Vérifier que le package est publié sur Packagist
-- Vérifier l'orthographe du nom: `gessyken/laravel-test-accelerator`
+
+-   Vérifier que le package est publié sur Packagist
+-   Vérifier l'orthographe du nom: `gessyken/laravel-test-accelerator`
 
 ### Erreur de configuration
-- Vérifier que `composer.json` est valide: `composer validate`
-- Vérifier que tous les champs requis sont présents
+
+-   Vérifier que `composer.json` est valide: `composer validate`
+-   Vérifier que tous les champs requis sont présents
 
 ## 📞 Support
 
 Si vous rencontrez des problèmes:
+
 1. Vérifier les logs GitHub Actions
 2. Consulter la documentation Packagist
 3. Vérifier la configuration du webhook

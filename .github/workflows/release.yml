@@ -3,12 +3,12 @@ name: Release
 on:
   push:
     tags:
-      - 'v*'
+      - "v*"
 
 jobs:
   release:
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -18,7 +18,7 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.4'
+          php-version: "8.4"
           extensions: mbstring, xml, curl, xdebug
           coverage: xdebug
 
@@ -42,21 +42,21 @@ jobs:
           prerelease: false
           body: |
             ## What's Changed
-            
+
             This release includes:
             - Automatic test generation for Laravel applications
             - Code coverage analysis
             - Performance benchmarking
             - AI-powered test generation
-            
+
             ## Installation
-            
+
             ```bash
             composer require gessyken/laravel-test-accelerator
             ```
-            
+
             ## Usage
-            
+
             ```bash
             php artisan test:generate app/Models/User.php
             php artisan test:coverage
