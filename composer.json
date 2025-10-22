@@ -1,7 +1,6 @@
 {
     "name": "gessyken/laravel-test-accelerator",
     "description": "A powerful Laravel package to accelerate the development and testing process of your applications",
-    "version": "1.0.0",
     "keywords": [
         "gessyken",
         "laravel",
