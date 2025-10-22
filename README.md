@@ -8,11 +8,11 @@ A Laravel package that accelerates test development by automatically generating 
 
 ## Features
 
-- **Automatic Test Generation** - Generate unit and feature tests automatically
-- **Code Coverage Analysis** - Analyze test coverage with detailed reports
-- **Performance Benchmarking** - Identify slow tests and performance bottlenecks
-- **AI Integration** - Generate intelligent test cases using AI (OpenAI, Anthropic)
-- **CLI Commands** - Easy-to-use Artisan commands for all features
+-   **Automatic Test Generation** - Generate unit and feature tests automatically
+-   **Code Coverage Analysis** - Analyze test coverage with detailed reports
+-   **Performance Benchmarking** - Identify slow tests and performance bottlenecks
+-   **AI Integration** - Generate intelligent test cases using AI (OpenAI, Anthropic)
+-   **CLI Commands** - Easy-to-use Artisan commands for all features
 
 ## Installation
 
@@ -76,9 +76,9 @@ TEST_ACCELERATOR_AI_MODEL=gpt-4
 
 ## Requirements
 
-- PHP 8.4+
-- Laravel 12+
-- Composer 2+
+-   PHP 8.4+
+-   Laravel 12+
+-   Composer 2+
 
 ## Testing
 
@@ -94,5 +94,5 @@ The MIT License (MIT). Please see [License File](LICENSE.md) for more informatio
 
 **Aurel KENNE**
 
-- GitHub: [@gessyken](https://github.com/gessyken)
-- Email: gessyken@gmail.com
+-   GitHub: [@gessyken](https://github.com/gessyken)
+-   Email: gessyken@gmail.com
